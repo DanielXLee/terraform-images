@@ -1,0 +1,6 @@
+FROM s390x/alpine:3.8
+MAINTAINER "Conductor Team <lixin8611@gmail.com>"
+
+ENV TERRAFORM_ARCH=s390x
+
+COPY pkg/linux_${TERRAFORM_ARCH}/terraform /terraform
