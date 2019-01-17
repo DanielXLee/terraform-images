@@ -27,4 +27,4 @@ docker build -f Dockerfile-s390x -t conductor/terraform-s390x:0.11.10 .
 docker push conductor/terraform-s390x:0.11.10
 
 #3. Build terraform plugins
-cd plugins;./buiid-plugins.sh
+cd plugins;./build-plugin.sh
