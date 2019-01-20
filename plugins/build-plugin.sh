@@ -24,7 +24,7 @@ done
 popd
 
 ## Build other build-in plugins
-for plugin in null template random tls local; do
+for plugin in null template random tls local openstack vsphere aws; do
   git clone https://github.com/terraform-providers/terraform-provider-${plugin}.git
   pushd terraform-provider-${plugin}
   for arch in amd64 ppc64le s390x; do
