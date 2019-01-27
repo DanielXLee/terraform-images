@@ -1,5 +1,4 @@
 localbuild
-working_dir
-plugins/working_dir
 pkg
 src
+dist

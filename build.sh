@@ -13,6 +13,16 @@ function build_binary() {
   bash -c "apt-get update && apt-get install -y zip && bash /go/xc_build.sh"
 }
 
+function build_pkgs() {
+  [[ -d dist ]] && rm -rf dist || mkdir dist
+  cp -r pkg/plugin/* dist/
+  cp -r pkg/linux_* dist/
+  cp -r pkg/darwin_* dist/
+  for pkg in $(ls dist); do
+    zip ${pkg}.zip dist/${pkg}/*
+  done
+}
+
 #2. Build terraform and plugin images
 function build_images() {
   # Build terraform images
@@ -57,6 +67,9 @@ function run() {
   bin)
     build_binary
     ;;
+  pkg)
+    build_pkgs
+    ;;
   image)
     build_images
     ;;
@@ -84,6 +97,7 @@ Options:
   -h help                  Display this help and exit
   -c command               Run command (bin, image, push, multi)
      [bin]                 Build terraform and plugin binary
+     [pkg]                 Build terraform and plugin zip package
      [image]               Build terraform and plugin docker images
      [push]                Push terraform and plugin docker images
      [multi]               Build terraform and plugin multiple arch docker images
@@ -91,6 +105,8 @@ Options:
 Examples:
 Build binary
   ./${script} -c bin
+Build zip package
+  ./${script} -c pkg
 Build image
   ./${script} -c image
 Push image
