@@ -54,8 +54,25 @@ Build all
   ./build.sh
 
 ```
+Example 1. Build terraform core binary
+```
+export PLUGIN=false
+export TERRAFORM_VERSION=0.11.11 # Optional, default is 0.11.10
+./build.sh -c bin
 
-Example, build `aws` plugin on os `linux` and arch `amd64 ppc64le s390x`, run command:
+pkg
+├── darwin_amd64
+│   └── terraform
+├── linux_amd64
+│   └── terraform
+├── linux_ppc64le
+│   └── terraform
+└── linux_s390x
+    └── terraform
+```
+
+Example 2. Build `aws` plugin on os `linux` and arch `amd64 ppc64le s390x`
+
 ```
 export PLUGIN=true
 export PROVIDERS=aws

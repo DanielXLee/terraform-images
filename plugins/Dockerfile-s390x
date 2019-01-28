@@ -2,4 +2,4 @@ FROM s390x/alpine:3.8
 MAINTAINER "Conductor Team <lixin8611@gmail.com>"
 
 ENV PLUGIN_ARCH=s390x
-COPY pkg/plugin/linux_${PLUGIN_ARCH} /Linux_${PLUGIN_ARCH}
+COPY linux_${PLUGIN_ARCH} /Linux_${PLUGIN_ARCH}

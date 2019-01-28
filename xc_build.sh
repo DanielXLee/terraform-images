@@ -33,7 +33,7 @@ function build_terraform () {
   go get -u github.com/hashicorp/terraform
   # Change into that directory
   pushd "${GOPATH}/src/github.com/hashicorp/terraform"
-  git checkout v0.11.10
+  git checkout v${TERRAFORM_VERSION}
   OUTPUT="pkg/{{.OS}}_{{.Arch}}/${PWD##*/}"
   build
   popd
@@ -46,7 +46,7 @@ function build_terraform_plugins () {
     go get -u github.com/terraform-providers/terraform-provider-${provider}
     # Change into that directory
     pushd "${GOPATH}/src/github.com/terraform-providers/terraform-provider-${provider}"
-    OUTPUT="pkg/plugin/{{.OS}}_{{.Arch}}/${PWD##*/}"
+    OUTPUT="pkg/plugins/{{.OS}}_{{.Arch}}/${PWD##*/}"
     build
     popd
   done
@@ -57,7 +57,7 @@ function build_terraform_plugins () {
     cd ${GOPATH}/src;git clone https://${IBM_GITHUB_USER}:${IBM_GITHUB_TOKEN}@github.ibm.com/bhwarren/terraform-fyre.git
     pushd ${GOPATH}/src/terraform-fyre
     git checkout v1.1.1
-    OUTPUT="pkg/plugin/{{.OS}}_{{.Arch}}/terraform-provider-fyre"
+    OUTPUT="pkg/plugins/{{.OS}}_{{.Arch}}/terraform-provider-fyre"
     build
     popd
   else
