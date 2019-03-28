@@ -17,6 +17,10 @@ function build() {
   # instruct gox to build statically linked binaries
   export CGO_ENABLED=0
 
+  # Ensure all remote modules are downloaded and cached before build so that
+  # the concurrent builds launched by gox won't race to redundantly download them.
+  go mod download
+
   # Build!
   echo "==> Building..."
   gox \

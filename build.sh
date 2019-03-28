@@ -2,7 +2,7 @@
 
 #1. Build terraform and plugin binary
 function build_binary() {
-  docker run --rm -v $(pwd):/go -w /go \
+  docker run --rm --net=host -v $(pwd):/go -w /go \
   -e PLUGIN="${PLUGIN}" \
   -e IBM_GITHUB_USER="${IBM_GITHUB_USER}" \
   -e IBM_GITHUB_TOKEN="${IBM_GITHUB_TOKEN}" \
