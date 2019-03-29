@@ -2,3 +2,5 @@ localbuild
 pkg
 src
 dist
+bin
+env

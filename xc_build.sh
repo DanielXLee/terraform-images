@@ -19,7 +19,7 @@ function build() {
 
   # Ensure all remote modules are downloaded and cached before build so that
   # the concurrent builds launched by gox won't race to redundantly download them.
-  go mod download
+#  go mod download
 
   # Build!
   echo "==> Building..."
@@ -33,19 +33,19 @@ function build() {
 
 function build_terraform () {
   # Get the terraform source code.
-  echo "Build terraform binary"
+  echo "Build terraform binary ..."
   go get -u github.com/hashicorp/terraform
   # Change into that directory
   pushd "${GOPATH}/src/github.com/hashicorp/terraform"
   git checkout v${TERRAFORM_VERSION}
-  OUTPUT="pkg/{{.OS}}_{{.Arch}}/${PWD##*/}"
-  build
+  make bin
+  cp -r pkg ${GOPATH}
   popd
 }
 
 function build_terraform_plugins () {
   # Get the public providers source code.
-  echo "Build public plugins"
+  echo "Build public plugins ..."
   for provider in $PROVIDERS; do
     go get -u github.com/terraform-providers/terraform-provider-${provider}
     # Change into that directory
@@ -55,12 +55,13 @@ function build_terraform_plugins () {
     popd
   done
 
-  echo "Build fyre plugin"
+  echo "Build fyre plugin ..."
   if [[ "X${IBM_GITHUB_USER}" != "X" && "X${IBM_GITHUB_TOKEN}" != "X" ]]; then
     go get github.com/tmc/scp
+    go get golang.org/x/sys/cpu
     cd ${GOPATH}/src;git clone https://${IBM_GITHUB_USER}:${IBM_GITHUB_TOKEN}@github.ibm.com/bhwarren/terraform-fyre.git
     pushd ${GOPATH}/src/terraform-fyre
-    git checkout v1.1.1
+    git checkout v${TERRAFORM_PLUGIN_FYRE_VERSION}
     OUTPUT="pkg/plugins/{{.OS}}_{{.Arch}}/terraform-provider-fyre"
     build
     popd
@@ -75,6 +76,9 @@ XC_ARCH=${XC_ARCH:-"ppc64le amd64 s390x"}
 XC_OS=${XC_OS:-"linux darwin"}
 XC_EXCLUDE_OSARCH="!darwin/arm !darwin/386"
 PLUGIN=${PLUGIN:-}
+TERRAFORM_VERSION=${TERRAFORM_VERSION:-0.11.13}
+TERRAFORM_PLUGIN_VERSION=${TERRAFORM_PLUGIN_VERSION:-1.1}
+TERRAFORM_PLUGIN_FYRE_VERSION=${TERRAFORM_PLUGIN_FYRE_VERSION:-1.1.1}
 PROVIDERS=${PROVIDERS:-"null template random tls local openstack vsphere"}
 
 if [[ "$PLUGIN" == "true" ]]; then
